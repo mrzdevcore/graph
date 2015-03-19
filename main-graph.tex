@@ -1,14 +1,53 @@
 \documentclass[12pt,a4paper,oneside,twocolumn]{report}
 \usepackage[utf8]{inputenc}
 \usepackage[french]{babel}
+\usepackage[T1]{fontenc}
 \usepackage{amsmath}
 \usepackage{amsfonts}
 \usepackage{amssymb}
-\usepackage{graphicx}
-\usepackage[left=2.00cm, right=2.00cm, top=2.50cm, bottom=2.50cm]{geometry}
+\usepackage{amscd}
+\usepackage{makeidx}
+\usepackage[pdftex]{graphicx}
+\usepackage{times}
+\usepackage{setspace}
+\usepackage[left=2.5cm,right=2cm,top=2cm,bottom=2cm]{geometry}
+\usepackage{url}
+\usepackage{listings}
+\usepackage{titlesec}
+\usepackage[titletoc]{appendix}
+\usepackage[nottoc]{tocbibind}
+\usepackage{tikz}
+\usepackage{pgfplots}
+%\usepackage[screen,nopanel]{pdfscreen}
+%\usepackage[lenny]{fncychap}
+\usepackage{acronym}
+\usepackage{multirow}
+\usepackage{graphics}
+\usepackage{xcolor}
+\usepackage[stable]{footmisc}
+\usepackage[textfont={it}]{caption}
+\usepackage{pgf}
+\usepackage{pdfpages}
+\usepackage{mathptmx}
+
+
+
+\usepackage{tocloft}
+
+
+\usepackage{hyperref}
+\hypersetup{colorlinks=true, linkcolor=black, citecolor=black, filecolor=black, urlcolor=black, pdftitle={Theorie des graphes et applications}, pdfauthor=Mirza Andriamanamisoa et Rivo Hermann, pdfsubject=graphe algorithme, pdfkeywords=graphe algorithme}
+
+
 \author{Mirza Andriamanamisoa MAROTSAHA and Rahajason Rivo Hermann}
 \title{Theorie des graphes }
 \begin{document}
-\paragraph{Mon paragraphe}
-blablalbalblalblala....
+
+\input{theory/theory.tex}
+
+\input{algorithm/algo.tex}
+
+\input{application/app.tex}
+
+
 \end{document}

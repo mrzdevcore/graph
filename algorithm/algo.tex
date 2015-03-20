@@ -1,1 +1,23 @@
-\chapter{Theorie des graphes et algorithmes}
+\chapter{Théorie des graphes et algorithmes}
+\section{Parcours d'un graphe}
+\subsection{Le parcours en profondeur}
+La DFS ou Depth-First Search  est la méthode la plus simple pour parcourir un graphe. Elle fonctionne sur tout type de graphe, cyclique ou non,orienté ou non.
+
+Le procédure de parcours pour la DFS n'est pas le même pour un graphe orienté et pour un graphe non orienté.
+
+\subsubsection{DFS pour graphe non orienté}
+En principe, on choisit un sommet r racine pour démarrer la recherche ou le parcours. Puis on traverse l'arête e = (r,v) qui menè vers le sommet v. En même temps on oriente e de r vers v. Maintenant, on dit que l'arête e examiné et on l'appelle arête d'un arbre.
+Le sommet r est appelé père de v et on dénote r=pere(v). On continue la recherche ou le parcours.
+Au sommet x, il y a deux cas:
+\begin{enumerate}
+	\item si tout les arêtes incident à x ont été examiné, on retourne vers le pere de x et on continue le processus sur pere(x). On dit que le sommet x est complètement examiné.
+	\item s'il existe un ou plusieurs arête(s) non examiné incident à x, alors on choisit un de ces arête e = (x,y) et on l'oriente de x vers y. Maintenant cet arête est dit "a examiné". On a deux sous cas maintenant:
+	\begin{enumerate}
+		\item Si y n'a pas encore été visité, on travers l'arête (x,y), on visite y et le parcours continue sur y. Dans ce cas, e = (x,y) est un arête de l'arbre et pere(y) = x.
+		\item Si y a été visité auparavant, on sélectionne d'autres arêtes non examiné de x. Dans ce cas, e = (x,y) est appelé arête de retour.  
+	\end{enumerate} 
+\end{enumerate}
+A chaque fois qu'on arrive à un nouveau sommet qui n'était pas encore visité, on lui donne un numero unique. Le numero de la racine est 1.
+$$DFN(x)=numero\ courant\ du\ sommet\ x$$ 
+
+Une DFS complète stop quand on revient à la racine et on a déjà visité tout les sommets ou quand on a trouvé le sommet/arête désiré. 

@@ -25,7 +25,7 @@ Une DFS complète stop quand on revient à la racine et on a déjà visité tout
 La DFS divise les arêtes du graphe G en arêtes d'arbre et arêtes de retour. Manifestement, les arêtes d'arbre forme un arbre étendu de G aussi connu sous le nom de arbre de la DFS. Si on inclut les orientations des arêtes de l'arbre, on obtient un arbre orienté de la DFS. 
 \begin{figure}
 \centering
-\includegraphics[width=0.7\linewidth]{images/dfs-search-example}
+\includegraphics[width=0.3\linewidth]{images/dfs-search-example}
 \caption{Graphe non-orienté: parcours DFS}
 \label{fig:dfs-search-example}
 \end{figure}
@@ -34,7 +34,7 @@ Pour la figure \ref{fig:dfs-search-example}, on débute la DFS sur le sommet au 
 L'arbre de la DFS correspondant est représenté par la figure 
 \begin{figure}
 \centering
-\includegraphics[width=0.7\linewidth]{images/dfs-tree-non-directed}
+\includegraphics[width=0.3\linewidth]{images/dfs-tree-non-directed}
 \caption{Arbre de la DFS correspondant au graphe non orienté \ref{fig:dfs-search-example}}
 \label{fig:dfs-tree-non-directed}
 \end{figure}
@@ -49,8 +49,36 @@ Dans la suite, on dénote par
  \end{array} \right.
 \end{equation*}
 
+et ARBRE et RETOUR sont des variables contenant les 
+arêtes orientés de l'arbre et les arêtes de retour.
 
 
+On peut donc représenté l'algorithme comme suit:
+
+\begin{algorithm}
+\caption{Depth First Search: graphe non orienté}
+\begin{algorithmic}
+\State $ARBRE \gets \emptyset$
+\State $RETOUR \gets \emptyset$
+
+
+
+\end{algorithmic}
+\end{algorithm}
+
+\begin{verbatim}
+ARBRE = []
+RETOUR = []
+i = 1
+pour tout sommet de G
+	sommet.pere = 0
+	sommet.k = 0
+fin pour
+
+\end{verbatim}
+\begin{enumerate}
+	\item Mettre  $ARBRE \longleftarrow\ \emptyset\ et\ i\longleftarrow\ 1$, 
+\end{enumerate}
 
 
  

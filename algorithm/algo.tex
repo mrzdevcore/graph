@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 \chapter{Théorie des graphes et algorithmes}
 \section{Parcours d'un graphe}
 \subsection{Le parcours en profondeur}
@@ -21,7 +20,38 @@ Au sommet x, il y a deux cas:
 A chaque fois qu'on arrive à un nouveau sommet qui n'était pas encore visité, on lui donne un numero unique. Le numero de la racine est 1.
 $$DFN(x)=numero\ courant\ du\ sommet\ x$$ 
 
-Une DFS complète stop quand on revient à la racine et on a déjà visité tout les sommets ou quand on a trouvé le sommet/arête désiré. 
-=======
-\chapter{Theorie des graphes et algorithmes}
->>>>>>> fe26511bcfd91ae555dabdeefafa6b0c87403791
+Une DFS complète stop quand on revient à la racine et on a déjà visité tout les sommets ou quand on a trouvé le sommet/arête désiré.
+
+La DFS divise les arêtes du graphe G en arêtes d'arbre et arêtes de retour. Manifestement, les arêtes d'arbre forme un arbre étendu de G aussi connu sous le nom de arbre de la DFS. Si on inclut les orientations des arêtes de l'arbre, on obtient un arbre orienté de la DFS. 
+\begin{figure}
+\centering
+\includegraphics[width=0.7\linewidth]{images/dfs-search-example}
+\caption{Graphe non-orienté: parcours DFS}
+\label{fig:dfs-search-example}
+\end{figure}
+
+Pour la figure \ref{fig:dfs-search-example}, on débute la DFS sur le sommet au coin supérieur gauche.
+L'arbre de la DFS correspondant est représenté par la figure 
+\begin{figure}
+\centering
+\includegraphics[width=0.7\linewidth]{images/dfs-tree-non-directed}
+\caption{Arbre de la DFS correspondant au graphe non orienté \ref{fig:dfs-search-example}}
+\label{fig:dfs-tree-non-directed}
+\end{figure}
+
+
+Dans la suite, on dénote par
+\begin{equation*}
+ K(x)=\left\{
+ \begin{array}{l l}
+ 0 & \quad \text{si le sommet x n'a pas été visité}\\
+ 1 & \quad \text{si le sommet x a été visité}
+ \end{array} \right.
+\end{equation*}
+
+
+
+
+
+ 
+ 

@@ -65,7 +65,7 @@ Comme chaque arêtes ont deux extrémités, on a:
 \paragraph*{Théorème 1.1.} Le graphe $G=(V,E)$, où $V = \{v_{1},\dots,v_{n}\}$ et
 $E=\{e_{1},\dots,e_{m} \}$, donne
 	$$ \sum_{i=1}^{n}d(v_{i})\ =\ 2m  $$
-\paragraph*{Corolaire.} Chaque graphe a un nombre pair de sommets d'un degré impair.
+\paragraph*{Corolaire 1.2.} Chaque graphe a un nombre pair de sommets d'un degré impair.
 
 \paragraph*{\textit{Preuve.}} Si les sommets $v_{1},\dots,v_{k}$ ont un degré impair et 
 les sommets $v_{k+1},\dots,v_{n}$ ont un degré pair, alors (Théorème 1.1.)
@@ -129,11 +129,11 @@ de sorte que toutes les arêtes du graphe relient un sommet dans X à un sommet 
 
 \newpage
 \subsection{Chaînes et cycles}
-Une \textbf{chaîne} dans G, est une suite ayant pour éléments alternativement des sommets et des
+\noindent Une \textbf{chaîne} dans G, est une suite ayant pour éléments alternativement des sommets et des
 arêtes, commençant et se terminant par un sommet, et telle que chaque arête est encadrée
 par ses extrémités.
 \paragraph*{}
-On dira que la chaîne \textbf{relie} le premier sommet de la suite au dernier sommet. En plus, on
+\noindent On dira que la chaîne \textbf{relie} le premier sommet de la suite au dernier sommet. En plus, on
 dira que la chaîne a pour longueur le nombre d'arêtes de la chaîne.
 
 \begin{figure}[h]
@@ -145,42 +145,195 @@ dira que la chaîne a pour longueur le nombre d'arêtes de la chaîne.
 \end{figure}
 
 \paragraph*{}
-On ne change pas une chaîne en inversant l'ordre des éléments dans la suite correspondante.
+\noindent On ne change pas une chaîne en inversant l'ordre des éléments dans la suite correspondante.
 Ainsi, les chaînes $ (v_{1} , e_{3} , v_{3} , e_{4} , v_{4} ) $ et
  $ (v_{4} , e_{4} , v_{3} , e_{3} , v_{1} )$ sont identiques.
  
-\paragraph*{Théorème 1.2.} Un graphe est biparti si et seulement s’il ne contient aucun cycle de longueur impaire.
+\paragraph*{Théorème 1.3.} Un graphe est biparti si et seulement s’il ne contient aucun cycle de longueur impaire.
 
-\paragraph*{Théorème 1.3.} Pour un graphe $ G $ ayant $ m $ arêtes, $ n $ sommets et $ p $ composantes connexes, on définit :
+\paragraph*{Théorème 1.4.} Pour un graphe $ G $ ayant $ m $ arêtes, $ n $ sommets et $ p $ composantes connexes, on définit :
 $$ \nu (G) =m-n+p$$
 $ \nu (G) $ est appelé le nombre \textbf{cyclomatique}. Prononcer " nu de G ".
 On a $ \nu (G) \geq  0$ pour tout graphe $ G $.
 De plus, $ \nu (G) = 0 $ si et seulement si $ G $ est sans cycle.
 
+\subsection{Graphes eulériens}
+On appelle \textbf{cycle eulérien} d'un graphe $ G $ un cycle passant une et une seule fois par chacune
+des arêtes de $ G $. Un graphe est dit \textbf{eulérien} s'il possède un cycle eulérien.
+On appelle \textbf{chaîne eulérienne} d'un graphe G une chaîne passant une et une seule fois par
+chacune des arêtes de G. Un graphe ne possédant que des chaînes eulériennes est \textbf{semi-
+eulérien}.
+Plus simplement, on peut dire qu'un graphe est eulérien (ou semi-eulérien) s'il est possible
+de dessiner le graphe sans lever le crayon et sans passer deux fois sur la même arête.
 
-\subsection{Représentations non graphiques d’un graphe}
+\subsection{Graphes hamiltoniens}
+On appelle \textbf{cycle hamiltonien} d'un graphe G un cycle passant une et une seule fois par
+chacun des sommets de G. Un graphe est dit \textbf{hamiltonien} s'il possède un cycle hamiltonien.
+On appelle \textbf{chaîne hamiltonienne} d'un graphe G une chaîne passant une et une seule fois
+par chacun des sommets de G. Un graphe ne possédant que des chaînes hamiltoniennes est
+\textbf{semi-hamiltonien}.
+Contrairement aux graphes eulériens, il n'existe pas de caractérisation simple des graphes\\
+(semi-)hamiltoniens. On peut énoncer quelques propriétés et conditions suffisantes :
+\begin{itemize}
+	\item un graphe possédant un sommet de degré 1 ne peut pas être hamiltonien ;
+	\item si un sommet dans un graphe est de degré 2, alors les deux arêtes incidentes à ce sommet
+	doivent faire partie du cycle hamiltonien ;
+	\item les graphes complets $ K_{n} $ sont hamiltoniens.
+\end{itemize}
 
-\subsection{Coupes}
+\paragraph*{Théorème 1.5.(Ore)} Soit $G$ un graphe simple d'ordre $n\geq 3$. Si pour toute paire $\{x,y\}$ 
+de sommets non adjacents, on a $d(x) + d(y) \geq n$, alors $G$ est hamiltonien.
 
-\subsection{Isomorphisme d'un graphe}
+\paragraph*{Corollaire 1.6.(Dirac)} Soit $G$ un graphe simple d'ordre $n\geq 3$. Si pour tout sommet $x$ de $G$,
+on a $d(x) \geq \dfrac{n}{2}$, alors $G$ est hamiltonien.
+
+\subsection{Couplages}
+Soit $ G $ un graphe simple. Un \textbf{couplage} $ C $ de $ G $ est un sous-graphe partiel 1-régulier de $ G$.
+On peut aussi dire qu'un couplage (ou appariement) est un ensemble d'arêtes deux à deux
+non-adjacentes.
+Un sommet $ v $ est \textbf{saturé} par un couplage $ C $ si $ v $ est l'extrémité d'une arête de $ C $ . Dans le
+cas contraire, $ v $ est \textbf{insaturé}.
+Un couplage maximum est un couplage contenant le plus grand nombre possible d'arêtes.
+Un graphe peut posséder plusieurs couplages maximum.
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.3\linewidth]{images/graph8}
+\caption{En gras, un couplage maximum de G. Les sommets 1, 3, 4 et 5 sont saturés.}
+\label{fig:graph8}
+\end{figure}
+
+Un \textbf{couplage parfait} est un couplage où chaque sommet du graphe est saturé.
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.7\linewidth]{images/graph9}
+\caption{Un couplage (à gauche); Un couplage maximum et parfait (à droite)}
+\label{fig:graph9}
+\end{figure}
+
+\paragraph*{Calcule d'un couplage maximum }
+Si $ C $ est un couplage de $ G $, on appelle \textbf{chaîne alternée} une chaîne élémentaire de \textbf{G} dont
+les arêtes sont alternativement dans $ C $ et hors de $ C $.
+Une chaîne alternée est dite augmentante si elle relie deux sommets insaturés. Ci-dessus,
+à gauche, la chaîne 1-4-3-6 est augmentante. En "intervertissant les épaisseurs" des arêtes
+le long de cette chaîne, on obtient un meilleur couplage (ci-dessus, à droite).
+
+\paragraph*{Théorème 1.7.(Berge, 1957)} Un couplage $ C $ est maximum si et seulement 
+s'il n'existe pas de chaîne augmentante
+relativement à $ C $.
 
 
-\section{Arbres}
-\subsection{Arbres et forêts}
+\subsection{Graphes planaires}
+On dit qu'un graphe est \textbf{planaire} si on peut le dessiner dans le plan de sorte que ses arêtes
+ne se croisent pas. Rappelons que les arêtes ne sont pas forcément rectilignes.
+Une \textbf{carte}, ou graphe \textbf{planaire topologique}, est une représentation particulière d'un multigraphe 
+planaire fini. On dit qu'une carte est connexe si son graphe l'est. Une carte divise
+le plan en plusieurs régions.
+Par exemple, la carte ci-dessous, avec sept sommets et neuf arêtes, divise le plan en quatre
+régions $(A, B,C, D)$. Trois régions sont limitées alors que la quatrième $(D)$, extérieure au
+diagramme, ne l'est pas.
 
-\subsection{Circuits et ensembles de coupe}
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.4\linewidth]{images/graph10}
+\label{fig:graph10}
+\end{figure}
+\paragraph*{}
+\textbf{Le degré d'une région r} , noté $ d(r) $, est la longueur de la chaîne fermée minimum passant 
+par tous les sommets qui délimitent cette région. Dans le graphe ci-dessus, $ d(A) = 6 $\\
+(la région $ A $ est délimitée par la chaîne fermée passant par les sommets $ (1, 2, 3, 5, 6, 5, 1) $),
+$ d(B) = 4 $, $ d(C) = 3 $ et $ d(D) = 5 $.
+On remarque que toute arête limite deux régions, ou est contenue dans une région et est
+alors comptée deux fois dans la chaîne fermée. Nous avons donc un lemme pour les régions,
+analogue au lemme des poignées de mains pour les sommets.
 
-\section{Arbres couvrants}
+\paragraph*{Théorème 1.8.} La somme des degrés des régions d'une carte connexe est 
+égale à deux fois le nombre d'arêtes.
+
+\paragraph*{Théorème 1.9.(Euler 1752)}
+Euler a établi une formule célèbre qui relie le nombre de sommets $ S $, le nombre
+d'arêtes $ A $ et le nombre de régions $ R $ d'une carte connexe:
+$$ S-A+R=2 $$
+
+\paragraph*{Théorème 1.10 (Kuratowski, 1930)}Un graphe est non planaire si et seulement s'il contient 
+un sous-graphe homéomorphe (voir lexique) au graphe biparti $ K_{3,3} $ ou au graphe complet $ K_{5} $.
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.7\linewidth]{images/graph11}
+\label{fig:graph11}
+\end{figure}
+
+\newpage
+\subsection{Représentations non graphiques d'un graphe}
+\subsubsection{Matrice d'adjacents}
+\noindent On peut représenter un graphe simple par une matrice d'adjacences. Une matrice $ (n\times m) $
+est un tableau de $ n $ lignes et $ m$  $ $ colonnes. $(i, j)$ désigne l'intersection de la ligne $ i$ et de
+la colonne j. Dans une matrice d'adjacences, les lignes et les colonnes représentent les
+sommets du graphe. Un $ "1" $  $ $ à la position $ (i, j) $ signifie que le sommet $ i $ est adjacent au
+sommet $ j $.
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.7\linewidth]{images/graph7}
+\caption[Exemple d'un graphe (à gauche) et sont matrice d'adjacents (à droite).]{Exemple d'un graphe (à gauche) et sont matrice d'adjacents (à droite).}
+\label{fig:graph7}
+\end{figure}
+\paragraph*{}
+Cette matrice a plusieurs caractéristiques :
+
+\begin{itemize}
+	\item[1.] Elle est carrée : il y a autant de lignes que de colonnes.
+	\item[2.] Il n'y a que des zéros sur la diagonale allant du coin supérieur gauche au coin inférieur droit. 
+	Un $ "1" $ sur la diagonale indiquerait une boucle.
+	\item[3.] Elle est symétrique : $ m_{i j} = m_{ ji} $ . On peut dire que la diagonale est un axe de symétrie.
+	\item[4.] Une fois que l'on fixe l'ordre des sommets, il existe une matrice d'adjacences unique
+pour chaque graphe. Celle-ci n'est la matrice d'adjacences d'aucun autre graphe.
+\end{itemize}
+\newpage
+\subsubsection{Listes d’adjacences}
+\noindent On peut aussi représenter un graphe simple en donnant pour chacun de ses sommets la liste
+des sommets auxquels il est adjacent. Ce sont les $ listes d'adjacences $.
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.7\linewidth]{images/graph12}
+\label{fig:graph12}
+\end{figure}
+
+
+\subsection{Arbres}
+On appelle \textbf{arbre} tout graphe connexe sans cycle. Un graphe sans cycle mais non connexe
+est appelé une \textbf{forêt}.
+Une \textbf{feuille} ou \textbf{sommet pendant} est un sommet de degré 1.
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.7\linewidth]{images/graph13}
+\label{fig:graph13}
+\end{figure}
+
+\paragraph*{Théorème 1.11.}
+Les affirmations suivantes sont équivalentes pour tout graphe G à n sommets.
+\begin{itemize}
+	\item[1.] $ G $ est un arbre,
+	\item[2.] $ G $ est sans cycle et connexe,
+	\item[3.] $ G $ est sans cycle et comporte $ n - 1 $ arêtes,
+	\item[4.] $ G $ est connexe et comporte $ n - 1 $ arêtes,
+	\item[5.] chaque paire $ u,\ v $ de sommets distincts est reliée par une seule chaîne simple (et
+	le graphe est sans boucle).
+\end{itemize}
+
+\paragraph*{Théorème 1.12.}
+Tout arbre fini avec au moins deux sommets comporte au moins deux sommets
+pendants.
+
+\section{Graphe orienté}
 \subsection{Définition}
 
 \subsection{Arbres orienté}
 
 \subsection{Graphe orienté acyclique}
 
-\section{Matrices et espace vectoriel d'un graphe}
-\subsection{Matrice associé d'un graphe}
-\subsection{Matrice d'une coupe}
-\subsection{Matrice  d'un circuit}
-\subsection{Application: Stationary Linear Networks}
-\subsection{Matrices over GF(2) and Vector Spaces of Graphs}
 

@@ -744,7 +744,7 @@ Résultat : rang $ r(v) $ de chaque sommet $ v \in V $ du digraphe G.
 \end{algorithm}
 
 \subsection{Graphes de comparabilité}
-Un graphe est de comparabilité si on peut orienter ses arêtes de façon transitive, c'est-à-
+Un graphe est de \textbf{comparabilité} si on peut orienter ses arêtes de façon transitive, c'est-à-
 dire de telle sorte que s'il existe un arc de i vers j et un arc de j vers k , alors il existe
 également un arc de i vers k .
 
@@ -763,3 +763,11 @@ $ G $ est de comparabilité.
 \centering
 \includegraphics[width=\linewidth]{images/graph25}
 \end{figure}
+\newpage
+\subsection*{Algorithme de coloration minimale des sommets d'un graphe de comparabilité}
+\noindent \textbf{1.} Déterminer une orientation transitive de G (par exemple à l'aide de l'algorithme
+ci-dessus), et poser $ i := 1 $.\\
+\textbf{2.} \textbf{Tant qu}'il existe encore des sommets à colorer \textbf{faire}\\
+donner la couleur $ i$  $ $ à tous les sommets sans prédécesseur,\\
+ôter ces sommets du graphe,\\
+poser $ i := i + 1 $

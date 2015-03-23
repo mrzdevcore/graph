@@ -329,6 +329,102 @@ Les affirmations suivantes sont équivalentes pour tout graphe G à n sommets.
 Tout arbre fini avec au moins deux sommets comporte au moins deux sommets
 pendants.
 
+\subsubsection*{Codage de Prüfer\\}
+Le codage de Prüfer (1918) est une manière très compacte de décrire un arbre. Il a été
+proposé par le mathématicien allemand Ernst Paul Heinz Prüfer (1896-1934).
+
+\subsubsection*{Codage\\}
+Soit l'arbre $ T = (V, E) $ et supposons $ V = \{1, 2, . . . , n \}. $
+L'algorithme ci-dessous fournira le code de $ T $ , c'est-à-dire une suite $ S $ de $ n - 2 $ termes
+employant (éventuellement plusieurs fois) des nombres choisis parmi $ 1,\dots , n $.
+\subsubsection*{Pas général de l'algorithme de codage}
+(à répéter tant qu'il reste plus de deux sommets dans l'arbre $ T $ )
+
+\begin{itemize}
+	\item[1.] identifier la feuille $ v $ de l'arbre ayant le numéro minimum ;
+	\item[2.] ajouter à la suite $ S $ le seul sommet s adjacent à v dans l'arbre $ T $ ;
+	\item[3.] enlever de l'arbre $ T $ le sommet $ v $ et l'arête incidente à $ v $.
+\end{itemize}
+
+\subsubsection*{Exemple de codage}
+\begin{figure}[h]
+\centering
+\includegraphics[width=\linewidth]{images/graph14}
+\end{figure}
+
+\subsubsection*{Décodage}
+Donnée : suite $ S $ de $ n - 2 $ nombres, chacun provenant de $ \{1, \dots , n\} $.
+Posons $ I = \{1, \dots , n\} $.
+\subsubsection*{Pas général de l'algorithme de décodage}
+(à répéter tant qu'il reste des éléments dans $ S $ et plus de deux éléments dans $ I $ )
+\begin{itemize}
+	\item[1.] identifier le plus petit élément $ i $ de $ I $ n'apparaissant pas dans la suite $ S $ ;
+	\item[2.] relier par une arête de $ T $ le sommet $ i $ avec le sommet $ s $ correspondant au premier
+élément de la suite $ S $ ;
+	\item[3.] enlever $ i $ de $ I $ et $ s $ de $ S $.
+\end{itemize}
+Les deux éléments qui restent dans $ I $ à la fin de l'algorithme constituent les extrémités de
+la dernière arête à ajouter à $ T $ .
+\newpage
+\subsubsection*{Exemple de décodage}
+\begin{figure}[h]
+\centering
+\includegraphics[width=1\linewidth]{images/graph15}
+\end{figure}
+
+\paragraph*{Théorème 1.13 (Cayley, 1857)}
+Le nombre d'arbres que l'on peut construire sur $ n $ $ (n \geq 2) $ sommets numérotés est
+égal à $ n^{n-2} $.
+
+\subsection{Arbres couvrants}
+Un \textbf{arbre couvrant} (aussi appelé arbre maximal) est un graphe partiel qui est aussi un
+arbre.
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.7\linewidth]{images/graph16}
+\end{figure}
+
+\subsubsection{Arbre couvrant de poids minimum}
+Soit le graphe $ G = (V, E) $ avec un poids associé à chacune de ses arêtes. On veut trouver,
+dans $ G $, un arbre maximal $ A = (V, F) $ de poids total minimum.
+
+\subsubsection*{Algorithme de Kruskal (1956)}
+Données :
+\begin{itemize}
+	\item Graphe $ G = (V, E) (\textbar V \textbar = n, \textbar E \textbar = m) $
+	\item Pour chaque arête e de $ E $ , son poids $ c(e) $.
+\end{itemize}
+\textit{Résultat} : Arbre ou forêt maximale A = (V, F) de poids minimum.
+
+Trier et renuméroter les arêtes de $ G $ dans l'ordre croissant de leur poids :
+$ c(e_{1} ) \leq c(e_{2} ) \leq \dots \leq c(e_{m}) $.
+%\begin{algorithm}
+%
+%\state Poser $ F := \varnothing, k := 0 $
+%Tant que $ k < m $ et $ \textbar F\textbar < n - 1 $ faire
+%Début
+%si $ e_{k}+1 $ ne forme pas de cycle avec $ F $ alors $ F := F \bigcup {e_{k+1} } $
+%$ k := k + 1 $
+%Fin
+%
+%\end{algorithm}
+
+\begin{algorithm}
+	\caption{Algorithme de Kruskal}\label{euclid}
+	\begin{algorithmic}[1]
+		\Procedure{}{}
+		\State Poser $ F := \varnothing, k := 0 $
+		\While {$ k < m $ et $ \textbar F\textbar < n - 1 $}
+		\If {$ e_{k}+1 $ ne forme pas de cycle avec $ F $}
+		\State$ F := F \bigcup {e_{k+1} } $;
+		\EndIf 
+		\State $k := k + 1 $;
+		\EndWhile
+		\EndProcedure
+	\end{algorithmic}
+\end{algorithm}
+
 \section{Graphe orienté}
 \subsection{Définition}
 

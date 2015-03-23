@@ -1,6 +1,6 @@
 \chapter{Théorie des graphes et algorithmes}
-\section{Parcours d'un graphe}
-\subsection{Le parcours en profondeur}
+\section{Le parcours en profondeur}
+\subsection{La DFS, Depth-First Search}
 La DFS ou Depth-First Search  est la méthode la plus simple pour parcourir un graphe. Elle fonctionne sur tout type de graphe, cyclique ou non,orienté ou non.
 
 Le procédure de parcours pour la DFS n'est pas le même pour un graphe orienté et pour un graphe non orienté.
@@ -55,30 +55,148 @@ arêtes orientés de l'arbre et les arêtes de retour.
 
 On peut donc représenté l'algorithme comme suit:
 
+%\renewcommand{\algorithmicforall}{\textbf{pour tout}}
+%\renewcommand{\algorithmicdo}{\textbf{faire}}
+%\renewcommand{\algorithmicif}{\textbf{si}}
+%\renewcommand{\algorithmicthen}{\textbf{alors}}
+
+
 %\begin{algorithm}
 %\caption{Depth First Search: graphe non orienté}
 %\begin{algorithmic}
 %\State $ARBRE \gets \emptyset$
 %\State $RETOUR \gets \emptyset$
+%\State $i \gets 1$
+%\ForAll{sommet dans G}
+%	\State $sommet.pere \gets 0$
+%	\State $sommet.k \gets 0$
+%\EndFor
+%
+%\ForAll{sommet dans G}
+%	\If{ $ sommet.k = 0 $}
+%		\State $i \gets i+1$
+%		\State $sommet.dfn \gets i$
+%		\State $sommet.k\gets 1$
+%		\State $u \gets sommet$
+%		\ForAll{$arête\ non\ examiné\ incident\ à\ sommet$}
+%			
+%			
+%			
+%		\EndFor	
+%	\EndIf
+%\EndFor
 %
 %
 %
 %\end{algorithmic}
 %\end{algorithm}
 
-\begin{verbatim}
-ARBRE = []
-RETOUR = []
-i = 1
-pour tout sommet de G
-	sommet.pere = 0
-	sommet.k = 0
-fin pour
-
-\end{verbatim}
+%\begin{verbatim}
+%ARBRE = []
+%RETOUR = []
+%i = 1
+%pour tout sommet de G
+%	sommet.pere = 0
+%	sommet.k = 0
+%fin pour
+%
+%\end{verbatim}
 \begin{enumerate}
-	\item Mettre  $ARBRE \longleftarrow\ \emptyset\ et\ i\longleftarrow\ 1$, 
+	\item Mettre  $ARBRE \leftarrow\ \emptyset,\ RETOUR \leftarrow\ \emptyset\ et\ et\ i\leftarrow\ 1$. Pour tout sommet x de G, mettre $pere(x)\leftarrow 0$ et $k(x)\leftarrow 0$
+	\item Choisir un sommet r pour lequel k(r)=0 (condition utile pour les graphes non connexes, voir étape 6). Mettre  $DFN(r) \gets i,\ k(r) \gets 1,\ u \gets r$
+	\item Si tous les arêtes incident à u sont tous examiné, va vers étape 5, ou alors choisir un arête e=(u,v) qui n'a pas été examiné
+	\item On oriente l'arête e de u vers v et on le marque comme examiné
+	\begin{enumerate}
+		\item si k(v)=0, alors on met $i \gets i+1,\ DFN(v)\gets i,\ ARBRE\gets ARBRE \cup\{e\},\ k(v)\gets 1,\ pere(v)\gets u\ et\ u\gets v$, et retourne à l'étape 3
+		\item si k(v)=1, alors on met $RETOUR\gets RETOUR\cup\{e\}$, et retourne à l'étape 3
+	\end{enumerate}  
+	\item Si $pere(u)\neq 0$, alors $u\gets pere(u)$, et on retourne à l'étape 3
+	\item (Seulement pour les graphes non connexe, pour qu'on puisse passé d'un composant à un autre.) Si il existe un sommet r tel que k(r)=0, alors $i\gets i+1$ et on retourne à l'étape 2.
+	\item Stop
 \end{enumerate}
+
+
+
+\subsubsection{DFS pour les graphes orientés}
+La DFS dans un digraphe G (connexe et acyclique) est similaire au cas d'un graphe non orienté. L'algorithme divise les arcs de G en quatre classes différentes. Si la recherche arrive à un arc e=(x,y) non examiné, alors les quatre classes possibles sont:
+\begin{enumerate}
+	\item Si y n'a pas encore été visité, alors e est un arête de l'arbre de la DFS
+	\item Si y a été visité, alors il y a trois cas possible:
+	\begin{enumerate}
+		\item y est un descendant de x dans le sous graphe induit par un arbre de la DFS existant, alors e est un arête avant et DFN(y)>DFN(x)
+		\item  x est descendant de y dans le sous graphe induit par un arbre de la DFS, alors e est un arête de retour et DFN(y)<DFN(x)
+		\item x et y n'ont aucune relation par rapport à aucun arbre de la DFS existant. Alors e est un arête de travers et  DFN(y)<DFN(x).(Note: il est impossible que DFN(y)>DFN(x))
+	\end{enumerate}
+\end{enumerate}
+
+Le sous graphe orienté de G induit par les arêtes de l'arbre est appelé forêt de la DFS (forêt orienté). Si DFN(y)>DFN(x) pour un arc(x,y), alors (x,y) est un arête avant ou bien arête de l'arbre de la DFS.
+Durant la recherche, il est facile de différentier ces deux cas puisque (x,y) est un arête de l'arbre si y n'a pas encore été visité, et arête avant sinon. Si DFN(y)<DFN(x), alors (x,y) est un arête de retour ou bien arête de travers. Durant la recherche, il est aussi facile de distinguer les deux puisque (x,y) est un arête de travers si y est complètement analysé, et arête de retour sinon.
+
+
+Dans la suite, pere, k, ARBRE et RETOUR sont définis comme précédemment. On a aussi deux nouveaux variables "AVANT" et "TRAVERS" et $$L(x)= \left\{
+\begin{array}{l l}
+1 & \quad \text{si le x est complètement analysé}\\
+0 & \quad \text{sinon}
+\end{array} \right. $$ 
+
+On peut donc présenter l'algorithme comme suit:
+\begin{enumerate}
+	\item Mettre  $ARBRE \leftarrow\ \emptyset,\ RETOUR \leftarrow\ \emptyset\ et\ et\ i\leftarrow\ 1,\ AVANT\gets\emptyset,\ TRAVERS\gets\emptyset$. Pour tout sommet x de G, mettre $pere(x)\leftarrow 0$, $k(x)\leftarrow 0,\ L(x)\gets0$
+	\item Choisir un sommet r pour lequel k(r)=0. Mettre  $DFN(r) \gets i,\ k(r) \gets 1,\ u \gets r$
+	\item Si tous les arêtes sortant de u sont tous examiné, va vers étape 5, sinon  choisir un arête e=(u,v) qui n'a pas été examiné
+	\item Marque l'arc e comme examiné
+	\begin{enumerate}
+		\item si k(v)=0, alors on met $i \gets i+1,\ DFN(v)\gets i,\ ARBRE\gets ARBRE \cup\{e\},\ k(v)\gets 1,\ pere(v)\gets u\ et\ u\gets v$, et retourne à l'étape 3
+		\item si k(v)=1 et DFN(v)>DFN(u), alors on met $AVANT\gets AVANT\cup\{e\}$, et retourne à l'étape 3
+		\item si k(v)=1 et DFN(v)<DFN(u) et L(v)=0, alors on met $RETOUR\gets RETOUR\cup\{e\}$, et retourne à l'étape 3
+		\item si k(v)=1 et DFN(v)<DFN(u) et L(v)=1, alors on met $TRAVERS\gets TRAVERS\cup\{e\}$, et retourne à l'étape 3
+	\end{enumerate}  
+	\item Si $pere(u)\neq 0$, alors $u\gets pere(u)$, et on retourne à l'étape 3
+	\item (Seulement pour les graphes non connexe, pour qu'on puisse passé d'un composant à un autre.) Si il existe un sommet r tel que k(r)=0, alors $i\gets i+1$ et on retourne à l'étape 2.
+	\item Stop
+\end{enumerate}
+
+
+\subsubsection{Exemple}
+La DFS pour le digraphe (graphe orienté) suivant débute à partir de la racine du coin supérieur gauche et procède comme suit (les arêtes de retour sont marqués avec une seule ligne, les arêtes de travers sont marqués avec deux lignes et les arêtes avant marqués avec trois lignes):
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.7\linewidth]{images/grath-oriente-1}
+\caption{Digraph G de départ, DFS}
+\label{fig:grath-oriente-1}
+\end{figure}
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.7\linewidth]{images/grath-oriente-2}
+\caption{Digraph G avec les arêtes avants, arêtes arrières et travers}
+\label{fig:grath-oriente-2}
+\end{figure}
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.7\linewidth]{images/grath-oriente-3}
+\caption{forêt de la DFS correspondant au graph G}
+\label{fig:grath-oriente-3}
+\end{figure}
+
+\begin{theorem}
+	Si une depth first search dans un digraphe quasi-connexe commence à partir de l'une de ces racines, alors on un forêt orienté de la DFS. En particulier, le forêt de la DFS pour un graphe connexe est un toujours orienté peu importe où la recherche commence.
+\end{theorem}
+
+\subsection{BFS, Breadth-First Search}
+\subsubsection{BFS pour un graph non orienté}
+
+
+
+\subsubsection{BFS pour graph orienté ou digraphe}
+
+
+\section{Recherche du plus cours chemin}
+
+
+
+
+
+
 
 
  

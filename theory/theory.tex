@@ -398,24 +398,15 @@ Données :
 \textit{Résultat} : Arbre ou forêt maximale A = (V, F) de poids minimum.
 
 Trier et renuméroter les arêtes de $ G $ dans l'ordre croissant de leur poids :
-$ c(e_{1} ) \leq c(e_{2} ) \leq \dots \leq c(e_{m}) $.
-%\begin{algorithm}
-%
-%\state Poser $ F := \varnothing, k := 0 $
-%Tant que $ k < m $ et $ \textbar F\textbar < n - 1 $ faire
-%Début
-%si $ e_{k}+1 $ ne forme pas de cycle avec $ F $ alors $ F := F \bigcup {e_{k+1} } $
-%$ k := k + 1 $
-%Fin
-%
-%\end{algorithm}
+$$ c(e_{1} ) \leq c(e_{2} ) \leq \dots \leq c(e_{m}) $$.
+
 
 \begin{algorithm}
 	\caption{Algorithme de Kruskal}\label{euclid}
 	\begin{algorithmic}[1]
 		\Procedure{}{}
 		\State Poser $ F := \varnothing, k := 0 $
-		\While {$ k < m $ et $ \textbar F\textbar < n - 1 $}
+		\While {$ k < m $ \textbf{and} $ \textbar F\textbar < n - 1 $}
 		\If {$ e_{k}+1 $ ne forme pas de cycle avec $ F $}
 		\State$ F := F \bigcup {e_{k+1} } $;
 		\EndIf 
@@ -425,11 +416,350 @@ $ c(e_{1} ) \leq c(e_{2} ) \leq \dots \leq c(e_{m}) $.
 	\end{algorithmic}
 \end{algorithm}
 
+\subsection*{Exemple}
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=\linewidth]{images/graph17}
+\end{figure}
+
+Les arêtes de poids 3 n'ont pas pu être placées, car elles auraient formé un cycle.
+L'algorithme s'est arrêté dès que cinq arêtes ont été placées. Toute arête supplémentaire
+aurait créé un cycle.
+S'il y a plusieurs arêtes de même poids, il peut y avoir plusieurs arbres couvrants de poids
+minimum : tout dépend de l'ordre dans lequel ces arêtes ont été triées.
+
+\subsection{Coloration}
+Soit $ G = (V, E) $ un graphe. Un sous-ensemble $ S $ de $ V $ est un \textbf{stable} s'il ne comprend que
+des sommets non adjacents deux à deux. Dans le graphe ci-dessous, $ \{v_{1} , v_{2} \} $ forment un
+stable ; $ \{v_{2} , v_{4} \} $ aussi, ainsi que $ \{v_{2} , v_{5} \} $ et $ \{v_{3} , v_{5}\} $.
+Le cardinal du plus grand stable est le \textbf{nombre de stabilité} de $ G $ ; on le note $ \alpha (G) $. Dans
+le graphe ci-dessous, on a $ \alpha (G)=2 $.
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.3\linewidth]{images/graph18}
+\end{figure}
+\subsection*{}
+La \textbf{coloration} des sommets d'un graphe consiste à affecter à tous les sommets de ce graphe
+une couleur de telle sorte que deux sommets adjacents ne portent pas la même couleur. Une
+coloration avec $ k $ couleurs est donc une partition de l'ensemble des sommets en $ k $ stables.
+Le nombre chromatique du graphe $ G $, noté $ \gamma (G) $, est le plus petit entier $ k $ pour lequel il
+existe une partition de $ V $ en $ k $ sous-ensembles stables.
+Sur le graphe ci-dessous, on a eu besoin de trois couleurs (notées 1, 2 et 3) pour colorer les
+sommets de sorte que deux sommets adjacents aient des couleurs différentes. On a donc
+trois stables : $ \{v_{1}, v_{2} \}$, $ \{v_{3}, v_{5}\} $ et $ \{v_{4} \} $. On ne peut pas utiliser moins de couleurs, à cause
+des cliques $ \{v_{1},v_{4}, v_{5}\}$ et $ \{v_{1}, v_{3}, v_{4}\} $.
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.3\linewidth]{images/graph19}
+\end{figure}
+
+Remarquons enfin que le sommet $ v_{2} $ aurait aussi pu être coloré "3". La coloration minimale n'est donc pas forcément unique.
+
+\subsection*{Encadrement du nombre chromatique}
+\subsubsection*{Majoration}
+\begin{itemize}
+	\item[$\bullet$] $ \gamma (G) \leq r + 1 $, où $ r $ est le plus grand degré des sommets de $ G $.
+\textbf{Preuve} : Soit un graphe et $ r $ le degré maximum de ses sommets. Donnons-nous une
+palette de $ (r + 1) $ couleurs. Pour chaque sommet du graphe on peut tenir le raisonne-
+ment suivant : ce sommet est adjacent à $ r $ sommets au plus, et le nombre de couleurs
+déjà utilisées pour colorer ces sommets est donc inférieur ou égal à $ r $ . Il reste donc au
+moins une couleur non utilisée dans la palette, avec laquelle nous pouvons colorer notre
+sommet.
+	\item[$\bullet$] $ \gamma (G) \leq n + 1 - \alpha (G) $
+Preuve : Considérons $ S $ un stable de $ V $ de cardinalité $ \alpha (G) $. Une coloration possible
+des sommets consiste à colorer les sommets de $ S $ d'une même couleur et les $ n - \alpha (G) $
+autres sommets de couleurs toutes différentes. On en déduit que  \\ $ \gamma (G) \leq 1 + (n - \alpha (G)) $.
+\end{itemize}
+
+\subsubsection*{Minoration}
+\begin{itemize}
+\item[$ \bullet$]  Le nombre chromatique d'un graphe est supérieur ou égal à celui de chacun de ses
+sous-graphes.
+Preuve : Ce résultat découle de la définition même du nombre chromatique.
+\item[$ \bullet $] Le nombre chromatique du graphe sera supérieur ou égal à l'ordre de sa plus grande
+clique, que l'on note $ \omega (G) $ (prononcer oméga de $ G $). Autrement dit, $ \gamma (G) \geq \omega (G) $
+Preuve : Puisque, par définition, dans une clique d'ordre m, tous les sommets sont
+adjacents entre eux, il faudra m couleurs. Donc, il faudra au moins $ \omega (G) $ couleurs pour
+colorer le graphe $ G $.
+\end{itemize}
+
+\subsection*{Algorithme de coloration de Welsh et Powell}
+\noindent Cet algorithme couramment utilisé permet d'obtenir une assez bonne coloration d'un
+graphe, c'est-à-dire une coloration n'utilisant pas un trop grand nombre de couleurs.
+Cependant il n'assure pas que le nombre de couleurs soit minimum (et donc égal au nombre
+chromatique du graphe).\\
+\textbf{Étape 1}\\
+Classer les sommets du graphe dans l'ordre décroissant de leur degré, et attribuer à chacun
+des sommets son numéro d'ordre dans la liste obtenue.\\
+\textbf{Étape 2}  \\
+En parcourant la liste dans l'ordre, attribuer une couleur non encore utilisée au premier
+sommet non encore coloré, et attribuer cette même couleur à chaque sommet non encore
+coloré et non adjacent à un sommet de cette couleur.\\
+\textbf{ Étape 3}  \\
+S'il reste des sommets non colorés dans le graphe, revenir à l'étape 2. Sinon, FIN.
+
+\subsection*{Graphes parfaits}
+\noindent Dans le cadre de la théorie des graphes, Claude Berge a introduit en 1960 la notion de
+\textbf{graphe parfait} comme définissant un graphe pour lequel le nombre chromatique de chaque
+sous-graphe induit et la taille de la plus grande clique dudit sous-graphe induit sont égaux.
+Un graphe $ G $ est donc parfait si pour tout sous-graphe induit $ G' $ de $ G $ on a $ \gamma (G' ) = \omega (G' ) $.
+
+\subsection*{Coloration des sommets d'un graphe planaire}
+\paragraph*{Théorème 1.14 (Théorème des quatre couleurs)}
+On peut colorer les sommets d'un graphe planaire (sans boucles) en utilisant au plus
+quatre couleurs de telle sorte que toutes les arêtes aient des extrémités de couleurs
+différentes.
+
+\paragraph*{$\ \ $}
+\noindent Cette conjecture a été formulée pour la première fois par l'Écossais Francis Guthrie en 1852.
+Il était alors question de coloration de carte de géographie. La preuve
+de ce théorème n'arriva qu'en... 1976, grâce à Kenneth Appel et Wolfgang Haken. La démonstration
+ fit grand bruit car ce fut le premier théorème de l'histoire des mathématiques
+qui a nécessité l'usage systématique de l'ordinateur.
+
+\subsection*{Coloration des arêtes d'un graphe}
+\noindent La coloration des arêtes d'un graphe consiste à affecter à toutes les arêtes de ce graphe une
+couleur de telle sorte que deux arêtes adjacentes ne portent pas la même couleur.
+\textbf{L'indice chromatique} du graphe $ G $ est le plus petit entier $ k $ pour lequel il existe une
+coloration des arêtes ; on le note $ \chi (G) $.
+Pour colorer les arêtes d'un graphe, on peut se ramener au problème de la coloration des
+sommets. Il suffit pour cela de travailler non pas sur le graphe lui-même, mais sur le graphe
+adjoint, noté $ G' $ , et que l'on définit ainsi :
+\begin{itemize}
+	\item[1.] à chaque arête de $ G = (V, E) $ correspond un sommet de $ G' = (E, F) $
+	\item[2.] deux sommets de $ G' $ sont reliés par une arête si les deux arêtes correspondantes de $ G $
+sont adjacentes.
+\end{itemize}
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=\linewidth]{images/graph20}
+\end{figure}
+
+On peut ensuite appliquer l'algorithme de \emph{Welsh} et \emph{Powell} sur le graphe $ G' $ pour colorer
+ses sommets. Une fois cela fait, on colorera les arêtes de $ G $ de la même couleur que les
+sommets correspondants de $ G' $ .
+
+\subsection{Graphes triangulés}
+\noindent Un graphe est \textbf{triangulé} si tous ses cycles de plus de 3 sommets contiennent au moins une
+\textbf{corde} (arête reliant deux sommets non adjacents d'un cycle).
+Un \textbf{séparateur} est un sous-ensemble $ W $ de sommets dans un graphe connexe $ G = (V, E) $
+tel que le graphe $ G[V - W ] $ est non connexe. Dans le graphe ci-dessous, $ W = \{v_{1} , v_{4}\} $ est
+un séparateur, $ W = \{v_{3} \}$ est un séparateur minimal.
+
+Un sommet $ v $ est dit \textbf{simplicial} si son voisinage $ N(v) $ est une clique. Dans le graphe ci-dessus, 
+les sommets simpliciaux sont $ v_{2} $ et $ v_{5} $ .
+
+\paragraph*{Théorème 1.15}
+Un graphe connexe est triangulé si et seulement si tout séparateur minimal est une
+clique.
+
+\subsection*{Preuve}
+\begin{itemize}
+	\item[1.] Supposons tout d'abord que tout séparateur est une clique. Soit $ C = [x_{1} , x_{2}, \dots , x_{k} , x_{1}] $
+$ (k \geq 4) $ un cycle dans $ G $ et soit $ W $ un séparateur minimal de $ x_{1} $ et $ x_{3} $ . W doit contenir $ x_{2} $
+et au moins un des sommets $ x_{4} ,\dots ,x_{k} $ . Comme W est une clique, il existe une corde
+dans $ C $.
+\item[2.] Supposons $ G $ triangulé et soit $ W $ un séparateur minimal. Supposons que $ W $ ne soit
+pas une clique. Soient $ G_{1} = (V_{1} , E_{1}) $ et $ G_{2} = (V_{2}, E_{2} ) $ deux composantes connexes de
+$ G[V-W ] $ et soient $ x $ et $ y $ deux sommets non adjacents dans $ W $ . Comme $ W $ est minimal,
+$ x $ et $ y $ ont chacun au moins un voisin dans $ G_{1} $ et dans $ G_{2} $ . Soient $ a_{1} $ et $ a_{2} $ les voisins
+de $ x $ dans $ G_{1} $ et $ G_{2} $ , et soient $ b_{1} $ et $ b_{2} $ ceux de y dans $ G_{1} $ et $ G_{2} $ . Comme $ G_{1} $ et $ G_{2}$  $ $
+sont connexes, il existe une chaîne reliant a1 à $ b_{1} $ dans $ G_{1} $ et une chaîne reliant $ a_{2} $ à $ b_{2} $
+dans $ G_{2} $ . Il existe donc une chaîne $ C_{1} $ sans corde reliant $ x $ à $ y $ dans $ G[V_{1} \bigcup W ] $ ainsi
+qu'une chaîne sans corde $ C_{2} $ reliant $ x $ à $ y $ dans $ G[V_{2} \bigcup W ] $. L'union de $ C_{1} $ et $ C_{2} $ est un
+cycle sans corde contenant au moins 4 sommets, contradiction.
+\end{itemize}
+
+\paragraph*{Théorème 1.16}
+Tout graphe triangulé autre qu'une clique contient au moins deux sommets simpliciaux
+non adjacents.
+
+\subsection*{Preuve}
+Si $ G $ ne contient que deux sommets, alors $ G $ est constitué de deux sommets isolés qui
+sont simpliciaux non adjacents. Supposons donc le théorème vrai pour tout graphe ayant
+moins de n sommets et soit $ \textbar V \textbar = n $. Soit $ W $ un séparateur minimal et $ G_{1 }= (V_{1} , E_{1}) $
+et $ G_{2} = (V_{2}, E_{2} )$ deux composantes connexes de $ G[V - W ] $. On a vu que $ W $ est une clique.
+\begin{itemize}
+\item Si $ G[V_{1} \bigcup W ] $ est une clique alors choisissons $ x $ dans $ V_{1} $ : $ x $ est simplicial dans $ G[V_{1} \bigcup W ] $.
+\item Sinon, par hypothèse d'induction, il existe deux sommets simpliciaux non adjacents dans
+\end{itemize}
+$ G[V_{1} \bigcup W ] $, et comme $ W $ est une clique, l'un de ces sommets qu'on appellera $ x $ est
+dans $ V_{1} $ .
+Dans chacun des deux cas on a déterminé un sommet $ x $ simplicial dans $ G[V_{1} \bigcup W ] $. De
+même, on peut déterminer un sommet $ y $ simplicial dans $ G[V_{2} \bigcup W ] $. Ces deux sommets $ x $
+et $ y $ sont simpliciaux dans $ G $ et non-adjacents.
+
+\subsection*{Algorithme de reconnaissance (Fulkerson et Gross, 1969)}
+\begin{itemize}
+	\item[1.] Poser $ G' = G $ ;
+\item[2.] Si $ G' $ est vide alors $ G $ est triangulé : STOP
+\item[3.] Si $ G' $ ne contient pas de sommet simplicial alors G n'est pas triangulé.
+\item[4.] Ôter un sommet simplicial de $ G' $ et retourner à 2.
+\end{itemize}
+
+Un schéma d'élimination parfait est un ordre $ v_{1} < \dots < v_{n} $ des sommets tel que $ v_{i} $ est
+simplicial dans $ G[v_{i} , \dots , v_{n} ] (n = \textbar V \textbar) $.
+
+\paragraph*{Théorème 1.17}
+Un graphe est triangulé si et seulement s'il possède un schéma d'élimination parfait.
+
+\subsection*{Preuve}
+\noindent \textbf{1.} Soit $ v_{1} < \dots < v_{n} $ un schéma d'élimination parfait et soit $ C = [x_{1} , x_{2}, . . . , x_{k}, x_{1}] (k \geq 4) $
+un cycle dans $ G $. Sans perte de généralité, on peut supposer que $  x_{1} = v_{i}$ apparaît avant
+$ x_{2}, . . . , x_{k} $ dans le schéma d'élimination parfait. Mais alors $ x_{2} $ est relié à $ x_{k} $ car $ x_{1} $ est
+simplicial dans le graphe $ G[v_{i}, \dots , v_{n} ] $ qui contient $ x_{2} , \dots , x_{k} $ . Le cycle $ C $ a donc une
+corde.\\
+\textbf{2.} Si $ G $ est triangulé on peut déterminer un schéma d'élimination parfait comme suit :
+Poser $ i :=1 $ ;
+Tant que $ V = \varnothing $ faire\\
+Choisir un sommet simplicial $ x $ dans le graphe résiduel. Mettre $ x $ en position $ i $\\
+Ôter $ x $ de $ V $ et poser $ i := i + 1 $.
+
+\subsection*{Algorithme de coloration d’un graphe triangulé $ G = (V,E) $}
+Déterminer un schéma d’élimination parfait $ v_{1} < \dots < v_{n} $
+Colorer $ G $ séquentiellement selon l'ordre inverse $ v_{n} < \dots < v_{1} $ , en utilisant pour chaque
+sommet le plus petit numéro de couleur possible.
+
 \section{Graphe orienté}
 \subsection{Définition}
+\subsection{Graphes orientés}
+En donnant un sens aux arêtes d'un graphe, on obtient un digraphe (ou graphe orienté).
+Le mot "digraphe" est la contraction de l'expression anglaise "directed graph ".
+Un digraphe fini $  G = (V, E) $ est défini par l’ensemble fini $ V = \{v_{1}, v_{2} , \dots , v_{n} \} $ dont 
+les éléments sont appelés sommets, et par l'ensemble fini $ E = {e_{1} , e_{2} , . . . , e_{m} } $ dont les éléments
+sont appelés arcs.
+Un arc e de l'ensemble E est défini par une paire ordonnée de sommets. Lorsque $ e = (u, v) $,
+on dit que l'arc $ e $ va de $ u $ à $ v $. On dit aussi que $ u $ est l'extrémité initiale et $ v $ l'extrémité
+finale de $ e $.
+\subsection{Degré d’un sommet d’un digraphe}
+Soit $ v $ un sommet d'un graphe orienté.
+On note $ d^{+} (v) $ le degré extérieur du sommet $ v $, c'est-à-dire le nombre d'arcs ayant $ v $
+comme extrémité initiale.
+On note $ d^{-} (v) $ le degré intérieur du sommet $ v $, c'est-à-dire le nombre d'arcs ayant $ v $
+comme extrémité finale.
+On définit le degré :
+$$ d(v) = d^{ +} (v) + d^{-}(v) $$
 
-\subsection{Arbres orienté}
+\subsection{Chemins et circuits}
+Un \textbf{chemin} conduisant du sommet $ a $ au sommet $ b $ est une suite ayant pour éléments alter-
+nativement des sommets et des arcs, commençant et se terminant par un sommet, et telle
+que chaque arc est encadré à gauche par son sommet origine et à droite par son sommet
+destination. On ne peut donc pas prendre les arc à rebours. Sur le digraphe ci-après, on
+peut voir par exemple le chemin $ (v_{3}, e_{2 }, v_{2} , e_{1} , v_{1}) $. Par convention, tout chemin comporte
+au moins un arc.
+On appelle  \textbf{distance}  entre deux sommets d'un digraphe la longueur du plus petit chemin
+les reliant. S'il n'existe pas de chemin entre les sommets $ x $ et $ y $, on pose $ d(x, y) = \infty $.
+Par exemple, sur le digraphe ci-dessous, $ d(v_{5} , v_{4}) = 2 $, $ d(v_{4}, v_{5}) = \infty $, $ d(v_{3} , v_{1} ) = 1 $,
 
-\subsection{Graphe orienté acyclique}
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.4\linewidth]{images/graph22}
+\end{figure}
+
+Un \textbf{circuit} est un chemin dont les sommets de départ et de fin sont les mêmes. Le digraphe
+ci-dessus ne contient pas de circuit.
+Les notions de chemins et de circuits sont analogues à celles des chaînes et des cycles pour
+les graphes non orientés.
+
+\subsubsection*{Digraphe fortement connexe}
+Un digraphe est \textbf{fortement connexe}, si toute paire ordonnée $ (a, b) $ de sommets distincts du
+graphe est reliée par au moins un chemin. En d'autres termes, tout sommet est atteignable
+depuis tous les autres sommets par au moins un chemin.
+On appelle \textbf{composante fortement connexe} tout sous-graphe induit maximal fortement
+connexe (maximal signifie qu'il n'y a pas de sous-graphe induit connexe plus grand contenant les sommets de la composante).
 
 
+\subsection{Représentations non graphiques des digraphes}
+\subsubsection{ Matrice d'adjacences}
+On peut représenter un digraphe par une matrice d'adjacences. Une matrice $ (n\times m) $ est
+un tableau de $ n $ lignes et $ m $ colonnes. $ (i, j) $ désigne l'intersection de la ligne $ i $ et de la
+colonne $ j $ .
+Dans une matrice d'adjacences, les lignes et les colonnes représentent les sommets du
+graphe. Un "1" à la position $ (i, j ) $ signifie qu'un arc part de $ i $ pour rejoindre $ j $.
+\subsection*{Exemple}
+Voici la matrice d'adjacences du digraphe G :
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.7\linewidth]{images/graph23}
+\end{figure}
+
+Cette matrice a plusieurs caractéristiques :
+\begin{itemize}
+	\item[1.] Elle est carrée : il y a autant de lignes que de colonnes.
+\item[2.] Il n'y a que des zéros sur la diagonale. Un "1" sur la diagonale indiquerait une
+boucle.
+\item[3.] Contrairement à celle d'un graphe non orienté, elle n'est pas symétrique.
+\item[4.] Une fois que l'on fixe l'ordre des sommets, il existe une matrice d'adjacences unique
+pour chaque digraphe. Celle-ci n'est la matrice d'adjacences d'aucun autre digraphe.
+\end{itemize}
+
+\subsubsection{ Listes d'adjacences}
+On peut aussi représenter un digraphe en donnant pour chacun de ses sommets la liste des
+sommets qu'on peut atteindre directement en suivant un arc (dans le sens de la flèche).
+\subsection*{Exemple}
+Voici les listes d'adjacences du digraphe $  G $ :
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.6\linewidth]{images/graph24}
+\end{figure}
+
+\subsection{Digraphes sans circuit}
+\paragraph*{Théorème 2.1}
+Le digraphe $ G $ est sans circuit si et seulement si on peut attribuer un nombre $ r(v) $,
+appelé le rang de $ v$ , à chaque sommet $ v $ de manière que pour tout arc $ (u, v) $ de $ G$  on ait
+$ r(u) < r(v) $.
+
+\subsection*{Preuve}
+Si $ G $ comporte un circuit $ C $ , il n'est pas possible de trouver de tels nombres $ r(i) $ car,
+autrement, considérant $ r(j) = max\{ r(i) \textbar i \in C\} $ et l'arc $ ( j, k) \in C $ , on aurait $ r(j) \leq r(k) $
+en contradiction avec la définition du rang.
+Réciproquement, si $ G $ n'a pas de circuit, il existe au moins un sommet sans prédécesseur
+dans $ G $ (sans cela, en remontant successivement d'un sommet à un prédécesseur, on finirait
+par fermer un circuit). Ainsi, on peut attribuer séquentiellement des valeurs aux sommets
+du graphe à l'aide de l'algorithme qui suit, ce qui conclura la démonstration.
+
+\subsection*{Algorithme de calcul du rang}
+Donnée : digraphe $ G = (V, E) $ sans circuit.
+Résultat : rang $ r(v) $ de chaque sommet $ v \in V $ du digraphe G.
+
+\begin{algorithm}
+	\caption{Algorithme de calcul du rang}\label{euclid}
+	\begin{algorithmic}[1]
+		\Procedure{}{}
+		\State $r := 0 $;
+		\State $X := V $;
+		\State $ R $ : l'ensemble des sommets de $ X $ sans prédécesseur dans $ X $;
+		\While {$X\ n'est\ pas\ \varnothing$ }
+		\State $ r(v) := r $ pour tout sommet $ v \in R $;
+		\State $ X := X - R $;
+		\State $ R $ : l'ensemble des sommets de $ X $ sans prédécesseur dans $ X$;
+		\State $ r := r + 1$;
+		\EndWhile
+		\EndProcedure
+	\end{algorithmic}
+\end{algorithm}
+
+\subsection{Graphes de comparabilité}
+Un graphe est de comparabilité si on peut orienter ses arêtes de façon transitive, c'est-à-
+dire de telle sorte que s'il existe un arc de i vers j et un arc de j vers k , alors il existe
+également un arc de i vers k .
+
+\subsection*{Algorithme permettant de déterminer si G = (V,E) est un graphe de comparabilité}
+\noindent \textbf{1.} $ F := \varnothing $\\
+\textbf{2.} \textbf{Tant que} $ F = E $ \textbf{faire}\\
+Choisir une arête e dans $ E - F  $, donner une orientation à e et compléter cette
+orientation pour assurer une orientation transitive de $ G $.\\
+\textbf{Si} une arête doit être orientée dans les deux sens,\\ \textbf{STOP} :\\
+$ G $ n'est pas de comparabilité.\\
+\textbf{Sinon}, rajouter à $ F $ toutes les arêtes nouvellement orientées. Si $ F = E $ \textbf{alors}\\
+\textbf{STOP} :
+$ G $ est de comparabilité.
+\subsection*{Exemple}
+\begin{figure}[h]
+\centering
+\includegraphics[width=\linewidth]{images/graph25}
+\end{figure}

@@ -1,6 +1,6 @@
 \chapter{Théorie des graphes et algorithmes}
-\section{Parcours d'un graphe}
-\subsection{Le parcours en profondeur}
+\section{Le parcours en profondeur}
+\subsection{La DFS, Depth-First Search}
 La DFS ou Depth-First Search  est la méthode la plus simple pour parcourir un graphe. Elle fonctionne sur tout type de graphe, cyclique ou non,orienté ou non.
 
 Le procédure de parcours pour la DFS n'est pas le même pour un graphe orienté et pour un graphe non orienté.
@@ -158,7 +158,7 @@ On peut donc présenter l'algorithme comme suit:
 
 
 \subsubsection{Exemple}
-La DFS pour le digraph suivant débute à partir de la racine du coin supérieur gauche et procède comme suit (les arêtes de retour sont marqués avec une seule ligne, les arêtes de travers sont marqués avec deux lignes et les arêtes avant marqués avec trois lignes):
+La DFS pour le digraphe (graphe orienté) suivant débute à partir de la racine du coin supérieur gauche et procède comme suit (les arêtes de retour sont marqués avec une seule ligne, les arêtes de travers sont marqués avec deux lignes et les arêtes avant marqués avec trois lignes):
 \begin{figure}[h]
 \centering
 \includegraphics[width=0.7\linewidth]{images/grath-oriente-1}
@@ -178,10 +178,19 @@ La DFS pour le digraph suivant débute à partir de la racine du coin supérieur
 \label{fig:grath-oriente-3}
 \end{figure}
 
+\begin{theorem}
+	Si une depth first search dans un digraphe quasi-connexe commence à partir de l'une de ces racines, alors on un forêt orienté de la DFS. En particulier, le forêt de la DFS pour un graphe connexe est un toujours orienté peu importe où la recherche commence.
+\end{theorem}
+
+\subsection{BFS, Breadth-First Search}
+\subsubsection{BFS pour un graph non orienté}
 
 
 
+\subsubsection{BFS pour graph orienté ou digraphe}
 
+
+\section{Recherche du plus cours chemin}
 
 
 
